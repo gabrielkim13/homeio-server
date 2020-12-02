@@ -1,23 +1,78 @@
 import { Request, Response } from 'express';
+import { container } from 'tsyringe';
+
+import DevicesService from '../services/DevicesService';
 
 class DevicesController {
-  public create(req: Request, res: Response): Response {
-    return res.status(201).send();
+  async create(req: Request, res: Response): Promise<Response> {
+    const user_id = req.user.id;
+    const { place_id } = req.params;
+    const { name, ip, type } = req.body;
+
+    const devicesService = container.resolve(DevicesService);
+
+    const device = await devicesService.create({
+      name,
+      ip,
+      type,
+      place_id,
+      user_id,
+    });
+
+    return res.status(201).send(device);
   }
 
-  public index(req: Request, res: Response): Response {
-    return res.send();
+  async index(req: Request, res: Response): Promise<Response> {
+    const { place_id } = req.params;
+
+    const devicesService = container.resolve(DevicesService);
+
+    const devices = await devicesService.findByPlaceId(place_id);
+
+    return res.send(devices);
   }
 
-  public show(req: Request, res: Response): Response {
-    return res.send();
+  async show(req: Request, res: Response): Promise<Response> {
+    const { id } = req.params;
+
+    const devicesService = container.resolve(DevicesService);
+
+    const device = await devicesService.findById(id);
+
+    return res.send(device);
   }
 
-  public update(req: Request, res: Response): Response {
-    return res.send();
+  async update(req: Request, res: Response): Promise<Response> {
+    const user_id = req.user.id;
+    const { id, place_id } = req.params;
+    const { name, ip, type } = req.body;
+
+    const devicesService = container.resolve(DevicesService);
+
+    const device = await devicesService.update({
+      id,
+      name,
+      ip,
+      type,
+      place_id,
+      user_id,
+    });
+
+    return res.send(device);
   }
 
-  public delete(req: Request, res: Response): Response {
+  async delete(req: Request, res: Response): Promise<Response> {
+    const user_id = req.user.id;
+    const { id, place_id } = req.params;
+
+    const devicesService = container.resolve(DevicesService);
+
+    await devicesService.delete({
+      id,
+      place_id,
+      user_id,
+    });
+
     return res.send();
   }
 }

@@ -19,7 +19,11 @@
     "prettier"
   ],
   "rules": {
+    "no-shadow": "off",
+    "@typescript-eslint/no-shadow": ["error"],
+    "no-useless-constructor": "off",
     "class-methods-use-this": "off",
+    "camelcase": "off",
     "prettier/prettier": "error",
     "import/extensions": [
       "error",

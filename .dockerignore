@@ -1,0 +1,13 @@
+.git
+.vscode
+node_modules
+.dockerignore
+.editorconfig
+.eslintignore
+.eslintrc.json
+.gitignore
+docker-compose.yml
+Dockerfile
+prettier.config.js
+README.md
+LICENSE

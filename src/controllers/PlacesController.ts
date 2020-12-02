@@ -1,23 +1,60 @@
 import { Request, Response } from 'express';
+import { container } from 'tsyringe';
+
+import PlacesService from '../services/PlacesService';
 
 class PlacesController {
-  public create(req: Request, res: Response): Response {
-    return res.status(201).send();
+  async create(req: Request, res: Response): Promise<Response> {
+    const user_id = req.user.id;
+    const { name, hub_ip } = req.body;
+
+    const placesService = container.resolve(PlacesService);
+
+    const place = await placesService.create({ name, hub_ip, user_id });
+
+    return res.status(201).send(place);
   }
 
-  public index(req: Request, res: Response): Response {
-    return res.send();
+  async index(req: Request, res: Response): Promise<Response> {
+    const user_id = req.user.id;
+
+    const placesService = container.resolve(PlacesService);
+
+    const places = await placesService.findByUserId(user_id);
+
+    return res.send(places);
   }
 
-  public show(req: Request, res: Response): Response {
-    return res.send();
+  async show(req: Request, res: Response): Promise<Response> {
+    const { id } = req.params;
+
+    const placesService = container.resolve(PlacesService);
+
+    const place = await placesService.findById(id);
+
+    return res.send(place);
   }
 
-  public update(req: Request, res: Response): Response {
-    return res.send();
+  async update(req: Request, res: Response): Promise<Response> {
+    const user_id = req.user.id;
+    const { id } = req.params;
+    const { name, hub_ip } = req.body;
+
+    const placesService = container.resolve(PlacesService);
+
+    const place = await placesService.update({ id, name, hub_ip, user_id });
+
+    return res.send(place);
   }
 
-  public delete(req: Request, res: Response): Response {
+  async delete(req: Request, res: Response): Promise<Response> {
+    const user_id = req.user.id;
+    const { id } = req.params;
+
+    const placesService = container.resolve(PlacesService);
+
+    await placesService.delete({ id, user_id });
+
     return res.send();
   }
 }

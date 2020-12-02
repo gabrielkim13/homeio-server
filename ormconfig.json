@@ -1,0 +1,34 @@
+[
+  {
+    "name": "default",
+    "type": "postgres",
+    "host": "postgres",
+    "port": 5432,
+    "username": "homeio",
+    "password": "homeio",
+    "database": "homeio",
+    "synchronize": true,
+    "logging": false,
+    "entities": [
+      "src/models/entities/**/*.ts"
+    ],
+    "migrations": [
+      "src/models/migrations/**/*.ts"
+    ],
+    "cli": {
+      "entitiesDir": "src/models/entities",
+      "migrationsDir": "src/models/migrations"
+    }
+  },
+  {
+    "name": "mongo",
+    "type": "mongodb",
+    "host": "mongo",
+    "port": "27017",
+    "database": "homeio",
+    "useUnifiedTopology": true,
+    "entities": [
+      "./src/models/schemas/**/*.ts"
+    ]
+  }
+]

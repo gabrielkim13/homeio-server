@@ -9,7 +9,7 @@ const routes = Router();
 
 routes.use('/users', usersRoutes);
 routes.use('/places', placesRoutes);
-routes.use('/devices', devicesRoutes);
-routes.use('/logs', logsRoutes);
+routes.use('/places/:place_id/devices', devicesRoutes);
+routes.use('/places/:place_id/devices/:device_id/logs', logsRoutes);
 
 export default routes;
