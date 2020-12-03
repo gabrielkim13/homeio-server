@@ -21,6 +21,20 @@ class LogsController {
     return res.status(201).send(log);
   }
 
+  async createFromNodered(req: Request, res: Response): Promise<Response> {
+    const { ip, type, value } = req.body;
+
+    const logsService = container.resolve(LogsService);
+
+    const log = await logsService.createFromNodered({
+      ip,
+      type,
+      value,
+    });
+
+    return res.status(201).send(log);
+  }
+
   async index(req: Request, res: Response): Promise<Response> {
     const { device_id } = req.params;
 

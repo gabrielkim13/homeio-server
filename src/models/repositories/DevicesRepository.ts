@@ -32,10 +32,16 @@ class DevicesRepository implements IDevicesRepository {
     return device;
   }
 
-  async findByPlaceId(place_id: string): Promise<Device[]> {
-    const device = await this.ormRepository.find({ place: { id: place_id } });
+  async findByIp(ip: string): Promise<Device | undefined> {
+    const device = await this.ormRepository.findOne({ ip });
 
     return device;
+  }
+
+  async findByPlaceId(place_id: string): Promise<Device[]> {
+    const devices = await this.ormRepository.find({ place: { id: place_id } });
+
+    return devices;
   }
 
   async save(device: Device): Promise<Device> {

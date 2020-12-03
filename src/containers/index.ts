@@ -15,6 +15,9 @@ import LogsRepository from '../models/repositories/LogsRepository';
 import ICryptoProvider from '../providers/interfaces/ICryptoProvider';
 import CryptoProvider from '../providers/CryptoProvider';
 
+import IHTTPClientProvider from '../providers/interfaces/IHTTPClientProvider';
+import HTTPClientProvider from '../providers/HTTPClientProvider';
+
 container.register<IUsersRepository>('UsersRepository', {
   useClass: UsersRepository,
 });
@@ -33,4 +36,8 @@ container.register<ILogsRepository>('LogsRepository', {
 
 container.register<ICryptoProvider>('CryptoProvider', {
   useClass: CryptoProvider,
+});
+
+container.register<IHTTPClientProvider>('HTTPClientProvider', {
+  useClass: HTTPClientProvider,
 });
