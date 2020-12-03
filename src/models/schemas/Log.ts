@@ -19,7 +19,6 @@ class Log {
   @Column()
   value: Record<string, unknown>;
 
-  @Exclude()
   @CreateDateColumn()
   created_at: Date;
 
