@@ -31,7 +31,11 @@ class LogsRepository implements ILogsRepository {
   }
 
   async findByDeviceId(device_id: string): Promise<Log[]> {
-    const log = await this.ormRepository.find({ device_id });
+    const log = await this.ormRepository.find({
+      device_id,
+      order: { created_at: 'DESC' },
+      take: 20,
+    });
 
     return log;
   }

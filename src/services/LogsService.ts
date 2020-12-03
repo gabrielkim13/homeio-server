@@ -9,16 +9,18 @@ import {
 } from './dtos/LogsServiceDTOs';
 
 import Log from '../models/schemas/Log';
+import { DeviceTypes } from '../models/entities/Device';
 
 import IPlacesRepository from '../models/repositories/interfaces/IPlacesRepository';
 import IDevicesRepository from '../models/repositories/interfaces/IDevicesRepository';
 import ILogsRepository from '../models/repositories/interfaces/ILogsRepository';
 import IHTTPClientProvider from '../providers/interfaces/IHTTPClientProvider';
 
+import { io } from '../events';
+
 import BadRequestError from '../errors/BadRequestError';
 import NotFoundError from '../errors/NotFoundError';
 import UnauthorizedError from '../errors/UnauthorizedError';
-import { DeviceTypes } from '../models/entities/Device';
 
 @injectable()
 class LogsService implements ILogsService {
@@ -49,17 +51,8 @@ class LogsService implements ILogsService {
     const hubPort = process.env.NODERED_PORT || '1880';
     const hubUrl = `http://${place.hub_ip}:${hubPort}/logs`;
 
-    console.log('Device type: ', Number(device.type) === DeviceTypes.LightBulb);
-
     switch (Number(device.type)) {
       case DeviceTypes.LightBulb:
-        console.log(hubUrl);
-        console.log({
-          ip: device.ip,
-          type: device.type.toString(),
-          value: (value.status as boolean) ? 'on' : 'off',
-        });
-
         await this.httpClient.post(hubUrl, {
           ip: device.ip,
           type: device.type.toString(),
@@ -73,6 +66,8 @@ class LogsService implements ILogsService {
     }
 
     const log = await this.logsRepository.create({ device_id, value });
+
+    io.sockets.emit('log', log);
 
     return classToClass(log);
   }
@@ -102,6 +97,8 @@ class LogsService implements ILogsService {
       device_id: device.id,
       value: deviceSpecificValue,
     });
+
+    io.sockets.emit('log', log);
 
     return classToClass(log);
   }
