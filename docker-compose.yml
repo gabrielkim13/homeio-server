@@ -21,7 +21,7 @@ services:
     command: yarn dev
     volumes:
       - .:/usr/src/app
-      - ./node_modules:/usr/src/app/node_modules
+      - /usr/src/app/node_modules
     ports:
       - "3333:3333"
     depends_on:
